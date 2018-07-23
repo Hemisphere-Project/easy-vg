@@ -228,10 +228,10 @@ void dumpscreen(int w, int h, FILE * fp) {
 
 Fontinfo SansTypeface;
 
-// initWindowSize requests a specific window size & position, if not called
+// InitWindowSize requests a specific window size & position, if not called
 // then init() will open a full screen window.
 // Done this way to preserve the original init() behaviour.
-void initWindowSize(int x, int y, unsigned int w, unsigned int h) {
+void evgInitWindowSize(int x, int y, unsigned int w, unsigned int h) {
     init_x = x;
     init_y = y;
     init_w = w;
@@ -679,7 +679,7 @@ void evgWindowOpacity(unsigned int a) {
 }
 
 // WindowPosition moves the window to given position
-void WindowPosition(int x, int y) {
+void evgWindowPosition(int x, int y) {
     dispmanMoveWindow(state, x, y);
 }
 

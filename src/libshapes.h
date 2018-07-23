@@ -5,10 +5,10 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-    extern VGfloat TextHeight(Fontinfo f, int pointsize);
+	extern VGfloat TextHeight(Fontinfo f, int pointsize);
 	extern VGfloat TextDepth(Fontinfo f, int pointsize);
-    extern VGfloat TextWidth(const char *, Fontinfo, int);
-    extern void RGBA(unsigned int, unsigned int, unsigned int, VGfloat, VGfloat[4]);
+	extern VGfloat TextWidth(const char *, Fontinfo, int);
+	extern void RGBA(unsigned int, unsigned int, unsigned int, VGfloat, VGfloat[4]);
 	extern void RGB(unsigned int, unsigned int, unsigned int, VGfloat[4]);
 
 	extern void evgTranslate(VGfloat, VGfloat);
@@ -24,13 +24,13 @@ extern "C" {
 	extern void evgPolyline(VGfloat *, VGfloat *, VGint);
 	extern void evgRect(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void evgLine(VGfloat, VGfloat, VGfloat, VGfloat);
-	extern void evgRoundrect(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
+	extern void evgRoundRect(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void evgEllipse(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void evgCircle(VGfloat, VGfloat, VGfloat);
 	extern void evgArc(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void evgImage(VGfloat, VGfloat, int, int, const char *);
 	extern void evgBegin();
-    extern void evgClear();
+	extern void evgClear();
 	extern void evgEnd();
 	extern void evgSaveEnd(const char *);
 	extern void evgBackground(unsigned int, unsigned int, unsigned int);
@@ -58,16 +58,16 @@ extern "C" {
 	extern Fontinfo loadfont(const int *, const int *, const unsigned char *, const int *, const int *, const int *,
 				 const short *, int);
 	extern void unloadfont(VGPath *, int);
-    extern VGImage createImageFromJpeg(const char *);
+	extern VGImage createImageFromJpeg(const char *);
 	extern void makeimage(VGfloat, VGfloat, int, int, VGubyte *);
 	extern void saveterm();
 	extern void restoreterm();
 	extern void rawterm();
 
 	// Added by Paeryn
-	extern void initWindowSize(int x, int y, unsigned int w, unsigned int h);
-	extern void WindowOpacity(unsigned int alpha);
-	extern void WindowPosition(int x, int y);
+	extern void evgInitWindowSize(int x, int y, unsigned int w, unsigned int h);
+	extern void evgWindowOpacity(unsigned int alpha);
+	extern void evgWindowPosition(int x, int y);
 #if defined(__cplusplus)
 }
 #endif
