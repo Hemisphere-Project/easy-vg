@@ -451,7 +451,8 @@ unsigned char *next_utf8_char(unsigned char *utf8, int *codepoint) {
 
 // Text renders a string of text at a specified location, size, using the specified font glyphs
 // derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
-void evgText(VGfloat x, VGfloat y, const char *s, Fontinfo f, int pointsize) {
+void evgText(VGfloat x, VGfloat y, const char *s, Fontinfo *fi, int pointsize) {
+    Fontinfo f = fi ? *fi : SansTypeface;
     VGfloat size = (VGfloat) pointsize, xx = x, mm[9];
     vgGetMatrix(mm);
     int character;
@@ -478,7 +479,8 @@ void evgText(VGfloat x, VGfloat y, const char *s, Fontinfo f, int pointsize) {
 }
 
 // TextWidth returns the width of a text string at the specified font and size.
-VGfloat TextWidth(const char *s, Fontinfo f, int pointsize) {
+VGfloat TextWidth(const char *s, Fontinfo *fi, int pointsize) {
+    Fontinfo f = fi ? *fi : SansTypeface;
     VGfloat tw = 0.0;
     VGfloat size = (VGfloat) pointsize;
     int character;
@@ -497,25 +499,25 @@ VGfloat TextWidth(const char *s, Fontinfo f, int pointsize) {
 }
 
 // TextMid draws text, centered on (x,y)
-void evgTextMid(VGfloat x, VGfloat y, const char *s, Fontinfo f, int pointsize) {
-    VGfloat tw = TextWidth(s, f, pointsize);
-    evgText(x - (tw / 2.0), y, s, f, pointsize);
+void evgTextMid(VGfloat x, VGfloat y, const char *s, Fontinfo *fi, int pointsize) {
+    VGfloat tw = TextWidth(s, fi, pointsize);
+    evgText(x - (tw / 2.0), y, s, fi, pointsize);
 }
 
 // TextEnd draws text, with its end aligned to (x,y)
-void evgTextEnd(VGfloat x, VGfloat y, const char *s, Fontinfo f, int pointsize) {
-    VGfloat tw = TextWidth(s, f, pointsize);
-    evgText(x - tw, y, s, f, pointsize);
+void evgTextEnd(VGfloat x, VGfloat y, const char *s, Fontinfo *fi, int pointsize) {
+    VGfloat tw = TextWidth(s, fi, pointsize);
+    evgText(x - tw, y, s, fi, pointsize);
 }
 
 // TextHeight reports a font's height
-VGfloat TextHeight(Fontinfo f, int pointsize) {
-    return (f.font_height * pointsize) / 65536;
+VGfloat TextHeight(Fontinfo *fi, int pointsize) {
+    return (fi->font_height * pointsize) / 65536;
 }
 
 // TextDepth reports a font's depth (how far under the baseline it goes)
-VGfloat TextDepth(Fontinfo f, int pointsize) {
-    return (-f.descender_height * pointsize) / 65536;
+VGfloat TextDepth(Fontinfo *fi, int pointsize) {
+    return (-fi->descender_height * pointsize) / 65536;
 }
 
 //

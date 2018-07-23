@@ -5,9 +5,9 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-	extern VGfloat TextHeight(Fontinfo f, int pointsize);
-	extern VGfloat TextDepth(Fontinfo f, int pointsize);
-	extern VGfloat TextWidth(const char *, Fontinfo, int);
+	extern VGfloat TextHeight(Fontinfo *, int);
+	extern VGfloat TextDepth(Fontinfo *, int);
+	extern VGfloat TextWidth(const char *, Fontinfo *, int);
 	extern void RGBA(unsigned int, unsigned int, unsigned int, VGfloat, VGfloat[4]);
 	extern void RGB(unsigned int, unsigned int, unsigned int, VGfloat[4]);
 
@@ -15,9 +15,9 @@ extern "C" {
 	extern void evgRotate(VGfloat);
 	extern void evgShear(VGfloat, VGfloat);
 	extern void evgScale(VGfloat, VGfloat);
-	extern void evgText(VGfloat, VGfloat, const char *, Fontinfo, int);
-	extern void evgTextMid(VGfloat, VGfloat, const char *, Fontinfo, int);
-	extern void evgTextEnd(VGfloat, VGfloat, const char *, Fontinfo, int);
+	extern void evgText(VGfloat, VGfloat, const char *, Fontinfo *, int);
+	extern void evgTextMid(VGfloat, VGfloat, const char *, Fontinfo *, int);
+	extern void evgTextEnd(VGfloat, VGfloat, const char *, Fontinfo *, int);
 	extern void evgCbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void evgQbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void evgPolygon(VGfloat *, VGfloat *, VGint);
