@@ -260,6 +260,10 @@ void evgInit(int *w, int *h) {
 
     *w = state->window_width;
     *h = state->window_height;
+
+    // Initial OpenVG parameters
+    vgSeti(VG_STROKE_CAP_STYLE, VG_CAP_BUTT);
+    vgSeti(VG_STROKE_JOIN_STYLE, VG_JOIN_MITER);
 }
 
 // AreaClear clears a given rectangle in window coordinates (not affected by
@@ -332,8 +336,12 @@ void evgSetStroke(VGfloat color[4]) {
 // StrokeWidth sets the stroke width
 void evgStrokeWidth(VGfloat width) {
     vgSetf(VG_STROKE_LINE_WIDTH, width);
-    vgSeti(VG_STROKE_CAP_STYLE, VG_CAP_BUTT);
-    vgSeti(VG_STROKE_JOIN_STYLE, VG_JOIN_MITER);
+}
+
+// StrokeStyle sets stroke cap/join style
+void evgStrokeStyle(int cap, int join) {
+    if (cap) vgSeti(VG_STROKE_CAP_STYLE, cap);
+    if (join) vgSeti(VG_STROKE_JOIN_STYLE, join);
 }
 
 //

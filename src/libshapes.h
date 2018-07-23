@@ -40,6 +40,7 @@ extern "C" {
 	extern void evgSetFill(VGfloat[4]);
 	extern void evgSetStroke(VGfloat[4]);
 	extern void evgStrokeWidth(VGfloat);
+	extern void evgStrokeStyle(int, int);
 	extern void evgStroke(unsigned int, unsigned int, unsigned int, VGfloat);
 	extern void evgFill(unsigned int, unsigned int, unsigned int, VGfloat);
 	extern void evgFillLinearGradient(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat *, int);
@@ -71,3 +72,12 @@ extern "C" {
 #if defined(__cplusplus)
 }
 #endif
+
+typedef enum {
+	EVG_CAP_BUTT = VG_CAP_BUTT,
+	EVG_CAP_ROUND = VG_CAP_ROUND,
+	EVG_CAP_SQUARE = VG_CAP_SQUARE,
+	EVG_JOIN_MITER = VG_JOIN_MITER,
+	EVG_JOIN_ROUND = VG_JOIN_ROUND,
+	EVG_JOIN_BEVEL = VG_JOIN_BEVEL,
+} evgParams;

@@ -1,4 +1,4 @@
-import os, sys, re, ctypes as ct, functools as ft
+import os, sys, re, enum, ctypes as ct, functools as ft
 
 # Docs:
 #   https://www.khronos.org/files/openvg-quick-reference-card.pdf
@@ -7,7 +7,7 @@ import os, sys, re, ctypes as ct, functools as ft
 
 class LibShapes(object):
 
-	headers = '''
+	_headers = '''
 		VGfloat TextHeight(Fontinfo *, VGfloat)
 		VGfloat TextDepth(Fontinfo *, VGfloat)
 		VGfloat TextWidth(char *, Fontinfo *, VGfloat)
@@ -43,6 +43,7 @@ class LibShapes(object):
 		evgSetFill(VGfloat[4])
 		evgSetStroke(VGfloat[4])
 		evgStrokeWidth(VGfloat)
+		evgStrokeStyle(int, int)
 		evgStroke(unsigned int, unsigned int, unsigned int, VGfloat)
 		evgFill(unsigned int, unsigned int, unsigned int, VGfloat)
 		evgFillLinearGradient(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat *, int)
@@ -62,6 +63,16 @@ class LibShapes(object):
 		evgWindowOpacity(unsigned int alpha)
 		evgWindowPosition(int x, int y)'''
 
+	@enum.unique
+	class c(enum.IntEnum):
+		none = 0
+		cap_butt = 0x1700
+		cap_round = 0x1701
+		cap_square = 0x1702
+		join_miter = 0x1800
+		join_round = 0x1801
+		join_bevel = 0x1802
+
 	ptr = ct.POINTER
 	ref = ct.byref
 
@@ -80,7 +91,7 @@ class LibShapes(object):
 
 	def __init__(self):
 		self._lib = ct.CDLL('libshapes.so.1')
-		self.parse_signatures(self.headers)
+		self.parse_signatures(self._headers)
 
 	def __getattr__(self, k):
 		# Keys are auto-translated from following formats:
