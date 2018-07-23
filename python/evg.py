@@ -1,12 +1,16 @@
 import os, sys, re, ctypes as ct, functools as ft
 
+# Docs:
+#   https://www.khronos.org/files/openvg-quick-reference-card.pdf
+#   https://www.khronos.org/registry/OpenVG/specs/openvg_1_0_1.pdf
+#   https://www.khronos.org/openvg/
 
 class LibShapes(object):
 
 	headers = '''
-		VGfloat TextHeight(Fontinfo *, int)
-		VGfloat TextDepth(Fontinfo *, int)
-		VGfloat TextWidth(char *, Fontinfo *, int)
+		VGfloat TextHeight(Fontinfo *, VGfloat)
+		VGfloat TextDepth(Fontinfo *, VGfloat)
+		VGfloat TextWidth(char *, Fontinfo *, VGfloat)
 		RGBA(unsigned int, unsigned int, unsigned int, VGfloat, VGfloat[4])
 		RGB(unsigned int, unsigned int, unsigned int, VGfloat[4])
 
@@ -14,9 +18,9 @@ class LibShapes(object):
 		evgRotate(VGfloat)
 		evgShear(VGfloat, VGfloat)
 		evgScale(VGfloat, VGfloat)
-		evgText(VGfloat, VGfloat, char *, Fontinfo *, int)
-		evgTextMid(VGfloat, VGfloat, char *, Fontinfo *, int)
-		evgTextEnd(VGfloat, VGfloat, char *, Fontinfo *, int)
+		evgText(VGfloat, VGfloat, char *, Fontinfo *, VGfloat)
+		evgTextMid(VGfloat, VGfloat, char *, Fontinfo *, VGfloat)
+		evgTextEnd(VGfloat, VGfloat, char *, Fontinfo *, VGfloat)
 		evgCbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat)
 		evgQbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat)
 		evgPolygon(VGfloat *, VGfloat *, VGint)

@@ -18,7 +18,7 @@ evg.circle(w.value / 2, 0, w.value)
 evg.fill(255, 255, 255, 1)
 evg.text_mid(
 	w.value / 2, h.value * 0.7,
-	b'hello world', None, int(w.value / 15) )
+	b'hello world', None, w.value / 15 )
 
 evg.end()
 
