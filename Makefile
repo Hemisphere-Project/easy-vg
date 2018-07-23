@@ -45,6 +45,13 @@ uninstall:
 	rm -f $(INCDIR)/libshapes.h
 	rm -f $(INCDIR)/fontinfo.h
 
+install-python:
+	cd python && python3 setup.py install --prefix=$(DEST)
+
+# Special target for checkinstall on debians, as install-python fails there normally
+install-checkinstall: install
+	cd python && install -m644 -p evg.py $(shell python3 -c 'import sys; print(sys.path[-1])')
+
 
 $(LIB): $(OBJ)
 	$(CC) $(LDFLAGS) -shared -o $@ $(OBJ)
@@ -61,4 +68,4 @@ $(FONTSRCDIR)/DejaVuSans.inc: $(OBJDIR)/font2openvg /usr/share/fonts/truetype/tt
 	$< $(word 2,$^) $@ DejaVuSans
 
 
-.PHONY: all clean install uninstall
+.PHONY: all clean install install-python install-checkinstall uninstall
