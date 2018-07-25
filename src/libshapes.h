@@ -59,7 +59,7 @@ extern "C" {
 	extern Fontinfo loadfont(const int *, const int *, const unsigned char *, const int *, const int *, const int *,
 				 const short *, int);
 	extern void unloadfont(VGPath *, int);
-	extern VGImage createImageFromJpeg(const char *);
+	extern VGImage createImageFromJpeg(const char *, int *, int *);
 	extern void makeimage(VGfloat, VGfloat, int, int, VGubyte *);
 	extern void saveterm();
 	extern void restoreterm();

@@ -22,7 +22,7 @@
 
 // createImageFromJpeg decompresses a JPEG image to the standard image format
 // source: https://github.com/ileben/ShivaVG/blob/master/examples/test_image.c
-VGImage createImageFromJpeg(const char *filename) {
+VGImage createImageFromJpeg(const char *filename, int *w, int *h) {
     FILE *infile;
     struct jpeg_decompress_struct jdc;
     struct jpeg_error_mgr jerr;
@@ -67,6 +67,7 @@ VGImage createImageFromJpeg(const char *filename) {
     jpeg_start_decompress(&jdc);
     width = jdc.output_width;
     height = jdc.output_height;
+    *w = width; *h = height;
 
     // Allocate buffer using jpeg allocator
     bbpp = jdc.output_components;
@@ -212,9 +213,18 @@ void unloadfont(VGPath * glyphs, int n) {
 }
 
 // Image places an image at the specifed location
-void Image(VGfloat x, VGfloat y, int w, int h, const char *filename) {
-    VGImage img = createImageFromJpeg(filename);
-    vgSetPixels(x, y, img, 0, 0, w, h);
+void evgImage(VGfloat x, VGfloat y, int w, int h, const char *filename) {
+    int img_w, img_h;
+    VGImage img = createImageFromJpeg(filename, &img_w, &img_h);
+    if (img == VG_INVALID_HANDLE) return;
+    VGfloat scale_x = w / (VGfloat) img_w, scale_y = h / (VGfloat) img_h;
+    vgSeti(VG_MATRIX_MODE, VG_MATRIX_IMAGE_USER_TO_SURFACE);
+    vgTranslate(x, y);
+    vgScale(scale_x, scale_y);
+    vgDrawImage(img);
+    vgScale(1/scale_x, 1/scale_y);
+    vgTranslate(-x, -y);
+    vgSeti(VG_MATRIX_MODE, VG_MATRIX_PATH_USER_TO_SURFACE);
     vgDestroyImage(img);
 }
 
