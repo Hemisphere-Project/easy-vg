@@ -14,8 +14,8 @@ int main() {
     /* We have to initialise the OpenVG canvas and renderer by using
      * `init(&w, &h)`.
      */
-    evgInit(&width, &height);
-    evgBegin(width, height);
+    evgInit(&width, &height, 0);
+    evgBegin();
     {
         evgBackground(0, 0, 0);
         evgFill(44, 77, 232, 1);

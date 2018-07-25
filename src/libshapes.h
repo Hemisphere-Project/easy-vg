@@ -35,7 +35,7 @@ extern "C" {
 	extern void evgSaveEnd(const char *);
 	extern void evgBackground(unsigned int, unsigned int, unsigned int);
 	extern void evgBackgroundRGB(unsigned int, unsigned int, unsigned int, VGfloat);
-	extern void evgInit(int *, int *);
+	extern void evgInit(int *, int *, int);
 	extern void evgFinish();
 	extern void evgSetFill(VGfloat[4]);
 	extern void evgSetStroke(VGfloat[4]);

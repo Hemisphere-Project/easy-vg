@@ -249,13 +249,14 @@ void evgInitWindowSize(int x, int y, unsigned int w, unsigned int h) {
 }
 
 // init sets the system to its initial state
-void evgInit(int *w, int *h) {
+void evgInit(int *w, int *h, int layer) {
     bcm_host_init();
     memset(state, 0, sizeof(*state));
     state->window_x = init_x;
     state->window_y = init_y;
     state->window_width = init_w;
     state->window_height = init_h;
+    state->layer = (int32_t) layer;
     oglinit(state);
     SansTypeface = loadfont(DejaVuSans_glyphPoints,
                 DejaVuSans_glyphPointIndices,

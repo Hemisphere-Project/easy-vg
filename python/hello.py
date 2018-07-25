@@ -7,7 +7,7 @@ from evg import LibShapes
 evg = LibShapes()
 
 w, h = evg.c_int(), evg.c_int()
-evg.init(w, h)
+evg.init(w, h, 0)
 evg.begin()
 
 evg.background(0, 0, 0)

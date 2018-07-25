@@ -38,7 +38,7 @@ class LibShapes(object):
 		evgSaveEnd(char *)
 		evgBackground(unsigned int, unsigned int, unsigned int)
 		evgBackgroundRGB(unsigned int, unsigned int, unsigned int, VGfloat)
-		evgInit(int *, int *)
+		evgInit(int *, int *, int)
 		evgFinish()
 		evgSetFill(VGfloat[4])
 		evgSetStroke(VGfloat[4])

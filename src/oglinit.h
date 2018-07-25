@@ -22,6 +22,9 @@ typedef struct {
     /** Window height, in pixels. */
     uint32_t window_height;
 
+    /** Layer on which to draw stuff. */
+    int32_t layer;
+
     DISPMANX_ELEMENT_HANDLE_T element;
 
     // EGL data
