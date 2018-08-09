@@ -1,40 +1,62 @@
-[header-image]: https://raw.githubusercontent.com/mgthomas99/easy-vg/develop/.github/assets/raspi-spiral.png
-[git-repository-url]: https://github.com/mgthomas99/openvg
-[license-shield-url]: https://img.shields.io/github/license/mgthomas99/easy-vg.svg?style=flat-square
-[license-url]: https://github.com/mgthomas99/openvg/blob/master/LICENSE
+[header-image]: https://raw.githubusercontent.com/mk-fg/easy-vg/develop/.github/assets/raspi-spiral.png
+[git-repository-url]: https://github.com/mk-fg/openvg
+[license-shield-url]: https://img.shields.io/github/license/mk-fg/easy-vg.svg?style=flat-square
+[license-url]: https://github.com/mk-fg/easy-vg/blob/master/LICENSE
 
-# EasyVG
+# EasyVG [mk-fg fork]
 
 [![One][header-image]][git-repository-url]
 [![LICENSE][license-shield-url]][license-url]
 
-EasyVG provides an abstraction layer above native OpenVG, for quickly and easily
-creating OpenVG contexts and drawing shapes, images, and text.
+EasyVG provides an abstraction layer on top of native
+[OpenVG graphics API](https://www.khronos.org/files/openvg-quick-reference-card.pdf),
+for easy creation of OpenVG contexts and drawing shapes, images, and text,
+without requiring anything other than the most minimal system setup.
 
 EasyVG follows standard C and EGL API naming conventions.
 
-EasyVG is fully compatible with the Raspberry Pi.
+EasyVG is fully compatible with Raspberry Pi boards.
 
-*This project is a fork of [OpenVG by Anthony Starks <ajstarks>](https://github.com/ajstarks/openvg)*
+This mk-fg/easy-vg repository is a fork of (in a recent-first order):
+
+- [EasyVG by George Thomas <mgthomas99>](https://github.com/mgthomas99/easy-vg)
+- [OpenVG by Anthony Starks <ajstarks>](https://github.com/ajstarks/openvg)
+
+Difference from upstream EasyVG (mgthomas99/easy-vg):
+
+- Has API frozen at a state of ~2018-08-01 master branch, with simple "draw
+  things via single call" API, same as ajstarks/openvg has, before introducing paths
+  (which are still in mgthomas99/easy-vg#develop branch at the time of writing).
+
+- Intended to be built and used as a shared libshapes.so library,
+  including from python via ctypes wrapper.
+
+- Updated with fixes and minor additional API features where necessary,
+  without changing its current methods and logic if possible.
 
 ### Text & Fonts
 
 EasyVG is capable of rendering text.
 
-To use custom TrueType fonts, developers should convert the font into C code use
-the [font2openvg](https://github.com/mgthomas99/font2openvg) library, and then
-load it the font using `loadfont()`.
+One default font (DejaVuSans.ttf) is converted and built-into libshapes.so via Makefile.
 
-*There are plans to support loading a font directly from a `.ttf` file*.
+To use custom TrueType fonts, developers should convert the font into C code use
+the font2openvg binary (use `make lib/font2openvg` or just `make` to build it),
+and then include and init it using `loadfont()` in C API.
+
+Loading custom fonts at runtime (incl. via python wrapper) is not supported.
 
 #### Using font2openvg
 
-The `font2openvg` repository contains build instructions for building the
-`font2openvg` source. Once the library is built, compile a TrueType font file.
+The [font2openvg](https://github.com/mgthomas99/font2openvg) repository contains
+more information on font2openvg tool included in this repo.
+
+Once the lib/font2openvg is built, compile a TrueType font file.
+
 For the below demonstrations, it will be assumed that you are using a source
 font file named `DejaVuSans.ttf` and a compiled output named `DejaVuSans.inc`.
 
-Once a font is compiled, it can be included in your code like so:
+Once a font is compiled, it can be included in your code like this:
 
 ```c
     #include "DejaVuSans.inc"
@@ -53,58 +75,125 @@ Once a font is compiled, it can be included in your code like so:
     unloadfont(DejaFont.Glyphs, DejaFont.Count);
 ```
 
+
+
 ## Build and Run Examples
 
-*Note that you will need at least 64 MB of GPU RAM*. You will also need the
-DejaVu fonts, and the jpeg and freetype libraries.
+*Note that you will need at least 64 MB of GPU RAM*
+(when using a single DispmanX layer, 128+ for more)
+
+For building libshapes.so and/or including the code, requirements are:
+- DejaVu fonts, jpeg and freetype libraries with headers.
+- For building and easy packaging on raspbian/debian: build-essentials checkinstall
 
 ```shell
-pi@raspberrypi ~ $ sudo apt-get install libfreetype6-dev libjpeg8-dev ttf-dejavu-core
+# apt install libfreetype6-dev libjpeg8-dev ttf-dejavu-core
+# apt install build-essentials checkinstall
 ```
 
-Next, build the library:
+Runtime requirements for libshapes.so and python wrapper:
+- libbrcmEGL / libbrcmGLESv2 - RPi's VC4 GL libs.
+- libjpeg - for createImageFromJpeg, can be omitted when including code from C.
+- python3 - when/if using python wrapper.
 
 ```shell
-pi@raspberrypi ~ $ git clone https://github.com/mgthomas99/easy-vg
-pi@raspberrypi ~ $ cd easy-vg
-pi@raspberrypi ~/easy-vg $ make
- g++ -I/usr/include/freetype2 fontutil/font2openvg.cpp -o font2openvg -lfreetype
- ./font2openvg /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf DejaVuSans.inc DejaVuSans
- 224 glyphs written
- gcc -O2 -Wall -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads -c libshapes.c
- gcc -O2 -Wall -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads -c oglinit.c
+# apt install libjpeg8 python3
 ```
 
-Next, build the examples:
+Basic build process:
 
 ```shell
-pi@raspberrypi ~/easy-vg/client $ cd example
-pi@raspberrypi ~/easy-vg/client $ make hello
- cc -Wall -I/opt/vc/include -I/opt/vc/include/interface/vcms_host/linux -I/opt/vc/include/interface/vcos/pthreads -I.. hello.c -o hello ../build/libshapes.o ../build/oglinit.o -L/opt/vc/lib -lEGL -lGLESv2 -lbcm_host -ljpeg -lpthread
-pi@raspberrypi ~/easy-vg/client $ ./hello
+% curl https://github.com/mk-fg/easy-vg/archive/master.tar.gz | tar -xz
+% cd easy-vg-master
+% make
 ```
 
-### Installing as a Global Library
-
-To install the library as a system-wide shared library:
+Build and run C example(s):
 
 ```shell
-pi@raspberrypi ~/easy-vg $ make library
-pi@raspberrypi ~/easy-vg $ sudo make install
+% pushd example
+% make hello
+% ./hello
+% popd
 ```
 
-The EasyVG shapes library can now be used in C code by including `shapes.h` and
-`fontinfo.h`, and linking with `libshapes.so`:
+Package/install on raspbian/debian (including libshapes.so and python module):
+
+```shell
+% sudo checkinstall -Dy --pkgname=easy-vg --pkgversion=1 --backup=no -- make install-checkinstall
+% dpkg -L easy-vg
+% dpkg-deb -I easy-vg_1-1_armhf.deb
+```
+
+Install / uninstall to current rootfs (not recommended outside of packaging scripts and such):
+
+```shell
+% make install
+% make install-python
+% make uninstall
+```
+
+Run python example:
+
+```shell
+% python3 python/hello.py
+```
+
+Build self-contained C binary (e.g. example.c, see also example/hello.c) based
+on the library code:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <jpeglib.h>
+#include "VG/openvg.h"
+#include "VG/vgu.h"
+#include "./src/fontinfo.h"
+#include "./src/libshapes.h"
+
+// Load image from specified jpg file and display it stretched to full screen.
+
+int main(int argc, char *argv[]) {
+  int w, h;
+  evgInit(&w, &h, -1);
+  evgBegin();
+  evgImage(0, 0, w, h, argv[1]);
+  evgEnd();
+  while (1) sleep(3600);
+  evgFinish();
+  return 0;
+}
+```
+
+```shell
+% gcc -Wall \
+  -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads \
+  -I. ./example.c -o ./example \
+  ./build/libshapes.o ./build/oglinit.o -L/opt/vc/lib -lbrcmEGL -lbrcmGLESv2 -lbcm_host -lpthread -ljpeg
+% curl -OL https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg
+% ./example Example.jpg
+```
+
+Build C binary linked against installed libshapes.so:
 
 ```c
 #include <shapes.h>
 #include <fontinfo.h>
+
+// ... code using libshapes.so
 ```
 
 ```shell
-pi@raspberrypi ~ $ gcc -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads anysource.c -o anysource -lshapes
-pi@raspberrypi ~ $ ./anysource
+% gcc -Wall \
+  -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads \
+  example.c -o example -lshapes
+% ./example
 ```
+
+Have fun!
+
+
 
 ## License
 

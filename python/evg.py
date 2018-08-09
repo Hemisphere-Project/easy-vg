@@ -5,7 +5,7 @@ import os, sys, re, enum, ctypes as ct, functools as ft
 #   https://www.khronos.org/registry/OpenVG/specs/openvg_1_0_1.pdf
 #   https://www.khronos.org/openvg/
 
-class LibShapes(object):
+class LibShapes:
 
 	_headers = '''
 		VGfloat TextHeight(Fontinfo *, VGfloat)
