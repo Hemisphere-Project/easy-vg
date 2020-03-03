@@ -81,7 +81,8 @@ void oglinit(EVG_STATE_T * state) {
     VC_RECT_T dst_rect;
     VC_RECT_T src_rect;
     static VC_DISPMANX_ALPHA_T alpha = {
-        DISPMANX_FLAGS_ALPHA_FIXED_ALL_PIXELS,
+        // DISPMANX_FLAGS_ALPHA_FIXED_ALL_PIXELS,
+        DISPMANX_FLAGS_ALPHA_FROM_SOURCE,
         255, 0
     };
 

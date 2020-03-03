@@ -64,7 +64,7 @@ $(OBJDIR)/font2openvg: ./lib/font2openvg.cpp
 	@mkdir -p $(OBJDIR)
 	$(CXX) $(CFLAGS) $(FONT2OPENVG_INCLUDE) $(FONT2OPENVG_LDFLAGS) -o $@ $<
 
-$(FONTSRCDIR)/DejaVuSans.inc: $(OBJDIR)/font2openvg /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf
+$(FONTSRCDIR)/DejaVuSans.inc: $(OBJDIR)/font2openvg /usr/share/fonts/TTF/DejaVuSans.ttf
 	$< $(word 2,$^) $@ DejaVuSans
 
 

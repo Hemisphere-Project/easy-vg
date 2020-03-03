@@ -646,7 +646,7 @@ void evgArc(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat sa, VGfloat aext
 
 // Start begins the picture, clearing a rectangular region with a specified color
 void evgBegin() {
-    VGfloat color[4] = { 0, 0, 0, 1 };
+    VGfloat color[4] = { 0, 0, 0, 0 };
     evgSetFill(color);
     evgSetStroke(color);
     evgStrokeWidth(0);
